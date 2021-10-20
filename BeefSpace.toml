@@ -1,8 +1,5 @@
 FileVersion = 1
 Projects = {MinceTest = {Path = "MinceTest"}, Mince = {Path = "Mince"}}
 
-[Configs.Test.Win32]
-ConfigSelections = {corlib = {Config = "Debug"}}
-
-[Configs.Test.Win64]
-ConfigSelections = {corlib = {Config = "Debug"}}
+[Workspace]
+StartupProject = "MinceTest"

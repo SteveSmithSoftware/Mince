@@ -1,6 +1,7 @@
 FileVersion = 1
 LastConfig = "Debug"
 LastPlatform = "Win64"
+RecentFilesList = ["MinceTest\\src\\Form.bf"]
 
 [MainWindow]
 X = 2274
@@ -39,6 +40,15 @@ RequestedHeight = 150.0
 SizePriority = 150.0
 DefaultDocumentsTabbedView = true
 Type = "TabbedView"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+Active = true
+TabLabel = "Form.bf"
+TabWidth = 85.0
+Type = "SourceViewPanel"
+FilePath = "MinceTest\\src\\Form.bf"
+CursorPos = 20
+ProjectName = "MinceTest"
 
 [[MainDockingFrame.DockedWidgets]]
 RequestedWidth = 250.0
