@@ -1,0 +1,7 @@
+FileVersion = 1
+Dependencies = {corlib = "*", SDL2 = "*"}
+
+[Project]
+Name = "Mince"
+TargetType = "BeefLib"
+StartupObject = "Mince.Program"
