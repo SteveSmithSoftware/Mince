@@ -1,5 +1,0 @@
-FileVersion = 1
-Projects = {Mince = {Path = "."}, SDL2 = "*", MinceTest = {Path = "../MinceTest"}}
-
-[Workspace]
-StartupProject = "MinceTest"

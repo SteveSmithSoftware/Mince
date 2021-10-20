@@ -1,0 +1,7 @@
+FileVersion = 1
+Dependencies = {corlib = "*", Mince = "*"}
+
+[Project]
+Name = "MinceTest"
+TargetType = "BeefGUIApplication"
+StartupObject = "MinceTest.Program"
