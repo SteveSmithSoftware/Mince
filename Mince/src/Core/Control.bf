@@ -9,10 +9,9 @@ namespace Mince.Core
 	{
 		public Rect Rect;
 		public bool IsDirty=true;
-		public Background Background;
-		public Frame Frame;
 		public bool isVisible=true;
-		public bool hasFrame=false;
+		public bool hasFocus=false;
+		public bool isMouseOver=false;
 		Window window;
 		public Control Parent;
 		List<Control> children = new .();
@@ -26,7 +25,10 @@ namespace Mince.Core
 		public virtual bool KeyPress(KeyEvent event) { return false; }
 		public virtual bool MouseDown(MouseEvent event) { return false; }
 		public virtual bool MouseUp(MouseEvent event) { return false; }
-		public virtual bool MouseMove(MouseEvent event) { return false; }
+		public virtual bool MouseMove(MouseEvent event) {
+			isMouseOver=true;
+			return false;
+		}
 		public virtual bool MouseScroll(MouseEvent event) { return false; }
 
 		protected abstract void fillTexture(Rect rect);
@@ -95,12 +97,15 @@ namespace Mince.Core
 			}
 		}
 
-		public void FindAffected(Point p, ref List<Control> affected) {
+		public void FindAffected(Point p, ref List<Control> affected, bool all=false) {
 			for (Control child in children) {
 				if (child.Rect.Contains(p)) {
 					affected.Add(child);
-					child.FindAffected(p, ref affected);
-					break;
+					child.FindAffected(p, ref affected ,all);
+					if (!all) break;
+				} else {
+					child.isMouseOver=false;
+					child.FindAffected(p, ref affected ,all);
 				}
 			}
 		}

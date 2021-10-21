@@ -170,10 +170,11 @@ namespace Mince.Core
 		void Key(SDL.KeyboardEvent evt)
 		{
 			keyevent.Code = (KeyCode)evt.keysym.sym;
+			keyevent.Scan = (ScanCode)evt.keysym.scancode;
 			keyevent.IsRepeat = (evt.isRepeat == 0) ? false : true;
-			String s = scope String();
-			keyevent.Code.ToString(s);
-			keyevent.Char = (char32)s[0];
+			//String s = scope String();
+			//keyevent.Code.ToString(s);
+			keyevent.Char = (char32)evt.keysym.sym;
 
 			keyevent.Flags = 0;
 			SDL.KeyMod keymod = SDL.GetModState();
@@ -246,7 +247,7 @@ namespace Mince.Core
 
 		void CreateIcons() {
 			SDL.Surface* images;
-			images = SDL.SDL_LoadBMP(@"C:\Development\UI.bmp");
+			images = SDL.SDL_LoadBMP(@"UI.bmp");
 			if (images != null) {
 	
 				int32 size = 20;
@@ -267,8 +268,11 @@ namespace Mince.Core
 					SDL.SDL_BlitSurface(images, &source, iconsS[i], &dest);
 					//iconsT[i] = SDL.CreateTextureFromSurface(renderer, iconsS[i]);
 				}
-			} else {
+/*			} else {
 				char8* err = SDL.GetError();
+				String s = new String(err);
+				StringView sv = StringView(err);
+*/
 			}
 			SDL.FreeSurface(images);
 		}
@@ -304,19 +308,16 @@ namespace Mince.Core
 				SDL.SetRenderTarget(g.renderer, null);
 			}
 
-			public void FillText(SDL2 g, String text, Color c, StringView name, int32 size) {
-				String fullName = scope String();
-				fullName.Append(@"C:\Windows\Fonts\");
-				fullName.Append(name);
-				fullName.Append(".ttf");
-				SDLTTF.Font * font = SDLTTF.OpenFont(fullName, size);
-				SDL.Color color = SDL.Color( c.R, c.G, c.B, c.A );
-				SDL.Surface * surface = SDLTTF.RenderText_Solid(font,text, color); 
+			public void FillText(SDL2 g, String text, Mince.Core.Font font) {
+				String fullName = font.FullName(.. scope String());
+				SDLTTF.Font * sdlfont = SDLTTF.OpenFont(fullName, font.Size);
+				SDL.Color color = SDL.Color( font.Color.R, font.Color.G, font.Color.B, font.Color.A );
+				SDL.Surface * surface = SDLTTF.RenderText_Solid(sdlfont,text, color); 
 				Texture = SDL.CreateTextureFromSurface(g.renderer, surface);
 				uint32 format=0;
 				int32 access =0;
 				SDL.QueryTexture(Texture, out format, out access, out Rect.Size.Width, out Rect.Size.Height);
-				SDLTTF.CloseFont(font);
+				SDLTTF.CloseFont(sdlfont);
 				SDL.FreeSurface(surface);
 			}
 

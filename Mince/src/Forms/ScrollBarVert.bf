@@ -20,20 +20,20 @@ namespace Mince.Forms
 
 		void init() {
 			UpArrow = new Button(this, "", Rect(0,0,Rect.Size.Width, Rect.Size.Width));
-			UpArrow.Panel.hasFrame=false;
-			UpArrow.Panel.Background.ImageIx = Theme.ImageIdx.VertScrollbarArrow;
-			UpArrow.Panel.texture.Rotate=true;
+			UpArrow.hasFrame=false;
+			UpArrow.Background.ImageIx = Theme.ImageIdx.VertScrollbarArrow;
+			UpArrow.texture.Rotate=true;
 
 			DownArrow = new Button(this, "", Rect(0,Rect.Size.Height-Rect.Size.Width,Rect.Size.Width, Rect.Size.Width));
-			DownArrow.Panel.hasFrame=false;
-			DownArrow.Panel.Background.ImageIx = Theme.ImageIdx.VertScrollbarArrow;
+			DownArrow.hasFrame=false;
+			DownArrow.Background.ImageIx = Theme.ImageIdx.VertScrollbarArrow;
 
 			Bar = new Panel(this, Rect(0, Rect.Size.Width, Rect.Size.Width, Rect.Size.Height-(Rect.Size.Width*2)));
 			Bar.Background.Color = Theme.scrollBg;
 
 			Thumb = new Button(Bar, "", Rect(0, 0 ,Rect.Size.Width, Rect.Size.Width*2));
-			Thumb.Panel.hasFrame=false;
-			Thumb.Panel.Background.Color = Theme.scrollThumb;
+			Thumb.hasFrame=false;
+			Thumb.Background.Color = Theme.scrollThumb;
 		}
 
 		protected override void fillTexture(Rect rect) {

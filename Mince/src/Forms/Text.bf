@@ -6,9 +6,7 @@ namespace Mince.Forms
 	public class Text : Control
 	{
 		public String Text = new String();
-		public String FontName = "arial";
-		public int32 FontSize = 14;
-		public Color FontColor = Theme.text;
+		public Font Font = new Font();
 
 		public this(Window window, StringView text, Rect rect) : base(window, rect) {
 			text.ToString(Text);
@@ -19,12 +17,21 @@ namespace Mince.Forms
 		}
 		public ~this() {
 			delete Text;
+			delete Font;
 		}
 
 		protected override void fillTexture(Rect rect) {
 			Graphics g = GetContext();
-			texture.FillText(g, Text, FontColor, FontName, FontSize);
+			texture.FillText(g, Text, Font);
 			Rect.Size = texture.Rect.Size;
 		}
+
+		public void SetText(StringView text) {
+			if (Text != null) delete Text;
+			Text = new String(text);
+			IsDirty=true;
+		}
+
+
 	}
 }

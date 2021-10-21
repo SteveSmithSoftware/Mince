@@ -49,7 +49,7 @@ namespace Mince.Forms
 				usedH+=sbH;
 			} else sbH=0;
 
-			Form = new Panel(this, Rect(0,tsH,size.Width,size.Height-usedH),false,true);
+			Form = new Panel(this, Rect(0,tsH,size.Width,size.Height-usedH),true,true);
 			Form.Background.Color=Theme.formBg;
 		}
 		
@@ -87,12 +87,14 @@ namespace Mince.Forms
 			for (Control c in controls) {
 				c.Paint();
 			}
-		}
+		};
 
 		public void KeyDown(KeyEvent event) {
+			invokeAffected(event);
 		}
 
 		public void KeyUp(KeyEvent event) {
+			invokeAffected(event);
 		}
 
 		public void MouseDown(MouseEvent event) {
@@ -111,17 +113,20 @@ namespace Mince.Forms
 		}
 
 		public void MouseMove(MouseEvent event) {
-			findAffected(event.Position);
+			findAffected(event.Position,true);
 			invokeAffected(event);
 		}
 
-		void findAffected(Point p) {
+		void findAffected(Point p, bool all=false) {
 			affected.Clear();
 			for (Control child in controls) {
 				if (child.Rect.Contains(p)) {
 					affected.Add(child);
 					child.FindAffected(p, ref affected);
-					break;
+					if (!all) break;
+				} else {
+					child.isMouseOver=false;
+					child.FindAffected(p, ref affected ,all);
 				}
 			}
 		}

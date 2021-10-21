@@ -4,6 +4,10 @@ namespace Mince.Forms
 {
 	public class Panel : Control
 	{
+		public Background Background;
+		public Frame Frame;
+
+		public bool hasFrame=false;
 		public bool hasHorizScrollBar = false;
 		public bool hasVertScrollBar = false;
 

@@ -3,9 +3,8 @@ using Mince.Core;
 
 namespace Mince.Forms
 {
-	public class Button : Control
+	public class Button : Panel
 	{
-		public Panel Panel;
 		public Text Text;
 
 		public System.Event<MouseDlg> Click ~ _.Dispose();
@@ -23,28 +22,43 @@ namespace Mince.Forms
 		}
 
 		void init(StringView txt) {
-			Rect rect = Rect(0,0,Rect.Size.Width,Rect.Size.Height);
-			Panel = new Panel(this, rect);
-			Panel.Background.Color = Theme.buttonBg;
-			Panel.hasFrame = true;
-			Panel.Frame.Color = Theme.buttonBorder;
-			Panel.Frame.Width = 1;
-			rect.Position.X = 4;
-			rect.Position.Y = 4;
-			if (!txt.IsEmpty) {
-				Text = new Text(this, txt, rect);
-				Text.FontColor = Theme.buttonText;
-				Text.FontSize = 12;
-			}
+			Background.Color = Theme.buttonBg;
+			hasFrame = true;
+			Frame.Color = Theme.buttonBorder;
+			Frame.Width = 1;
+			makeText(txt);
 		}
-		protected override void fillTexture(Rect rect) {
-			//Graphics g = GetContext();
+
+		void makeText(StringView txt) {
+			if (!txt.IsEmpty) {
+				Rect rect = Rect(0,0,Rect.Size.Width,Rect.Size.Height);
+				rect.Position.X = 4;
+				rect.Position.Y = 4;
+				Text = new Text(this, txt, rect);
+				Text.Font.Color = Theme.buttonText;
+				Text.Font.Size = 12;
+			}
 		}
 
 		public override bool KeyDown(KeyEvent event)
 		{
-			int i=0;
+			if (event.Code == KeyCode.RETURN && isMouseOver) {
+				mousedown=true;
+				return true;
+			}
 			return base.KeyDown(event);
+		}
+
+		public override bool KeyUp(KeyEvent event)
+		{
+			if (mousedown && isMouseOver) {
+				MouseEvent evt = new MouseEvent(this);
+				evt.Pressed = .Left;
+				Click(evt);
+				mousedown=false;
+				return true;
+			}
+			return base.KeyUp(event);
 		}
 
 		public override bool MouseDown(MouseEvent event)
@@ -56,11 +70,20 @@ namespace Mince.Forms
 		public override bool MouseUp(MouseEvent event)
 		{
 			if (mousedown) {
+				event.Sender = this;
 				Click(event);
 				mousedown=false;
 				return true;
 			}
 			return base.MouseUp(event);
+		}
+
+		public void SetText(StringView text) {
+			if (Text==null) {
+				makeText(text);
+			} else {
+				Text.SetText(text);
+			}
 		}
 	}
 }
