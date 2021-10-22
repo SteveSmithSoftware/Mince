@@ -11,6 +11,8 @@ namespace Mince.Forms
 
 		bool mousedown=false;
 
+		MouseEvent evt = new MouseEvent(this) ~ delete _;
+
 		public this(Window window, StringView text, Rect rect) : base(window, rect) {
 			init(text);
 		}
@@ -52,7 +54,6 @@ namespace Mince.Forms
 		public override bool KeyUp(KeyEvent event)
 		{
 			if (mousedown && isMouseOver) {
-				MouseEvent evt = new MouseEvent(this);
 				evt.Pressed = .Left;
 				Click(evt);
 				mousedown=false;
@@ -76,6 +77,20 @@ namespace Mince.Forms
 				return true;
 			}
 			return base.MouseUp(event);
+		}
+
+		public override void MouseEnter(MouseEvent event)
+		{
+			Graphics g = GetContext();
+			g.SetCursor(Theme.Cursor.HAND);
+			base.MouseEnter(event);
+		}
+
+		public override void MouseExit(MouseEvent event)
+		{
+			Graphics g = GetContext();
+			g.SetCursor(Theme.Cursor.ARROW);
+			base.MouseExit(event);
 		}
 
 		public void SetText(StringView text) {

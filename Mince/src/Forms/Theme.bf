@@ -1,3 +1,4 @@
+using System;
 using Mince.Core;
 
 namespace Mince.Forms
@@ -14,6 +15,10 @@ namespace Mince.Forms
 		public static Color buttonText = Color.white;
 		public static Color scrollBg = Color.lightslategray;
 		public static Color scrollThumb = Color.darkgray;
+		public static String checkBox = new String("cross.bmp") ~ delete _;
+		public static String checkBoxChecked = new String("tick.bmp") ~ delete _;
+		public static ImageIdx radioButton = ImageIdx.RadioOff;
+		public static ImageIdx radioButtonChecked = ImageIdx.RadioOn;
 
         public enum ImageIdx
         {
@@ -193,7 +198,25 @@ namespace Mince.Forms
 			None
 
 
-        };
+        }
+
+		/* System cursor types */
+		public enum Cursor : uint32
+		{
+			ARROW,	// Arrow
+			IBEAM,	// I-beam
+			WAIT,		// Wait
+			CROSSHAIR,	// Crosshair
+			WAITARROW,	// Small wait cursor (or Wait if not available)
+			SIZENWSE,	// Double arrow pointing northwest and southeast
+			SIZENESW,	// Double arrow pointing northeast and southwest
+			SIZEWE,	// Double arrow pointing west and east
+			SIZENS,	// Double arrow pointing north and south
+			SIZEALL,	// Four pointed arrow pointing north, south, east, and west
+			NO,		// Slashed circle or crossbones
+			HAND		// Hand
+		}
+
 
 	}
 }

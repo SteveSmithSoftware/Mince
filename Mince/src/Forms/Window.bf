@@ -122,10 +122,19 @@ namespace Mince.Forms
 			for (Control child in controls) {
 				if (child.Rect.Contains(p)) {
 					affected.Add(child);
+					if (!child.isMouseOver) child.Mouseenter=true;
+					else child.Mouseenter=false;
+					child.isMouseOver=true;
 					child.FindAffected(p, ref affected);
 					if (!all) break;
 				} else {
-					child.isMouseOver=false;
+					if (child.isMouseOver) {
+						child.Mouseexit=true;
+						child.isMouseOver=false;
+						affected.Add(child);
+					} else {
+						child.Mouseexit=false;
+					}
 					child.FindAffected(p, ref affected ,all);
 				}
 			}
@@ -155,9 +164,8 @@ namespace Mince.Forms
 					}
 					break;
 				case Event.EventType.MouseMove:
-					if (affected[i].MouseMove((MouseEvent)event)) {
-						if (!event.Bubble) return true;
-					}
+					affected[i].MouseMove((MouseEvent)event);
+					if (!event.Bubble) return true;
 					break;
 				case Event.EventType.MouseScroll:
 					if (affected[i].MouseScroll((MouseEvent)event)) {

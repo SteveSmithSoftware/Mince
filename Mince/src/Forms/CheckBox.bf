@@ -8,20 +8,23 @@ namespace Mince.Forms
 		public bool Checked=false;
 
 		public System.Event<MouseDlg> Click ~ _.Dispose();
+		MouseEvent evt = new MouseEvent(this) ~ delete _;
 
 		bool mousedown=false;
 
-		public this(Window window, Rect rect) : base(window, rect) {
-			init();
+		public this(Window window, Rect rect, bool check=false) : base(window, rect) {
+			init(check);
 		}
 		
-		public this(Control parent, Rect rect) : base(parent,rect) {
-			init();
+		public this(Control parent, Rect rect, bool check=false) : base(parent,rect) {
+			init(check);
 		}
+
 		public ~this() {
 		}
 
-		void init() {
+		protected void init(bool check) {
+			Checked = check;
 			hasFrame = false;
 			/*
 			Frame.Color = Color.black;
@@ -30,15 +33,20 @@ namespace Mince.Forms
 			SetChecked();
 		}
 
-		void SetChecked() {
+		protected virtual void SetChecked() {
 			if (Checked) {
 				//Background.ImageIx = Theme.ImageIdx.UICheckbox;
-				Background.Image = "Tick.bmp";
+				Background.Image = Theme.checkBoxChecked;
 			} else {
 				//Background.ImageIx = Theme.ImageIdx.None;
-				Background.Image = "Cross.bmp";
+				Background.Image = Theme.checkBox;
 			}
 			IsDirty=true;
+		}
+
+		public void SetChecked(bool check) {
+			Checked = check;
+			SetChecked();
 		}
 
 		public override bool KeyDown(KeyEvent event)
@@ -53,7 +61,6 @@ namespace Mince.Forms
 		public override bool KeyUp(KeyEvent event)
 		{
 			if (mousedown && isMouseOver) {
-				MouseEvent evt = new MouseEvent(this);
 				evt.Pressed = .Left;
 				Checked = !Checked;
 				SetChecked();
@@ -81,6 +88,20 @@ namespace Mince.Forms
 				return true;
 			}
 			return base.MouseUp(event);
+		}
+
+		public override void MouseEnter(MouseEvent event)
+		{
+			Graphics g = GetContext();
+			g.SetCursor(Theme.Cursor.HAND);
+			base.MouseEnter(event);
+		}
+
+		public override void MouseExit(MouseEvent event)
+		{
+			Graphics g = GetContext();
+			g.SetCursor(Theme.Cursor.ARROW);
+			base.MouseExit(event);
 		}
 	}
 }

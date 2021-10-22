@@ -12,6 +12,8 @@ namespace Mince.Core
 		SDL.Window* window;
 		SDL.Renderer* renderer;
 		SDL.Surface* screen;
+		SDL.SDL_Cursor* cursor;
+
 		SDL.Surface*[] iconsS = new SDL.Surface*[(int32)Forms.Theme.ImageIdx.COUNT];
 		//SDL.Texture*[] iconsT = new SDL.Texture*[(int32)Forms.Theme.ImageIdx.COUNT];
 
@@ -46,6 +48,8 @@ namespace Mince.Core
 				SDL.DestroyRenderer(renderer);
 			if (window != null)
 				SDL.DestroyWindow(window);
+			if (cursor != null)
+				SDL.FreeCursor(cursor);
 			SDLTTF.Quit();
 			for (int32 i = 0; i < (int32)Forms.Theme.ImageIdx.COUNT; i++)
 			{
@@ -243,6 +247,12 @@ namespace Mince.Core
 		{
 			event.Event = .Unknown;
 			genericevent(event);
+		}
+
+		public void SetCursor(Mince.Forms.Theme.Cursor cursor) {
+			if (this.cursor != null) SDL.FreeCursor(this.cursor);
+			this.cursor = SDL.CreateSystemCursor((SDL.SDL_SystemCursor)cursor);
+			SDL.SetCursor(this.cursor);
 		}
 
 		void CreateIcons() {
