@@ -2,4 +2,4 @@
 **/recovery/*
 **/.vs/*
 BeefSpace_User.toml
-build/*
+**/build/*
