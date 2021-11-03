@@ -60,6 +60,7 @@ namespace MinceTest
 			listview = new ListView(Form, Rect(5,150, 200, 100),l, f);
 
 			listbox = new ListBox(Form, Rect(5,270, 200, 100),l,f);
+			listbox.Selected.Add( new => this.ListSelected);
 
 
 			delete l;
@@ -102,6 +103,16 @@ namespace MinceTest
 		public void TextEntered(TextEvent event) {
 			String s = scope String("Text Changed to ");
 			s.Append(event.Text);
+			text.SetText(s);
+
+		}
+
+		public void ListSelected(Event event) {
+			ListBox lb  = (ListBox)event.Sender;
+			String s = scope String("List Item ");
+			s.Append(lb.Index.ToString(.. scope String()));
+			s.Append(" selected. Item text: ");
+			s.Append(lb.SelectedText);
 			text.SetText(s);
 
 		}

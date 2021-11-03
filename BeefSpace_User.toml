@@ -1,11 +1,11 @@
 FileVersion = 1
 LastConfig = "Debug"
 LastPlatform = "Win64"
-RecentFilesList = ["Mince\\src\\Core\\Event.bf", "Mince\\src\\Forms\\ListBox.bf", "Mince\\src\\Forms\\ListView.bf"]
+RecentFilesList = ["MinceTest\\src\\Form.bf", "Mince\\src\\Forms\\ListBox.bf", "z:\\Development\\Beef\\BeefLibs\\corlib\\src\\Collections\\List.bf", "Mince\\src\\Forms\\Button.bf", "Mince\\src\\Core\\Control.bf", "Mince\\src\\Forms\\ListView.bf"]
 
 [MainWindow]
-X = 2266
-Y = 175
+X = 2123
+Y = 199
 Width = 1405
 Height = 905
 ShowKind = "Maximized"
@@ -43,11 +43,39 @@ Type = "TabbedView"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 Active = true
-TabLabel = "Event.bf"
-TabWidth = 76.0
+TabLabel = "Form.bf"
+TabWidth = 85.0
 Type = "SourceViewPanel"
-FilePath = "Mince\\src\\Core\\Event.bf"
-CursorPos = 230
+FilePath = "MinceTest\\src\\Form.bf"
+CursorPos = 3033
+VertPos = 1380.0
+ProjectName = "MinceTest"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "List.bf"
+TabWidth = 74.0
+Type = "SourceViewPanel"
+FilePath = "z:\\Development\\Beef\\BeefLibs\\corlib\\src\\Collections\\List.bf"
+CursorPos = 3167
+VertPos = 2565.0
+ProjectName = "corlib"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Control.bf"
+TabWidth = 98.0
+Type = "SourceViewPanel"
+FilePath = "Mince\\src\\Core\\Control.bf"
+CursorPos = 1628
+VertPos = 585.0
+ProjectName = "Mince"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Button.bf"
+TabWidth = 92.0
+Type = "SourceViewPanel"
+FilePath = "Mince\\src\\Forms\\Button.bf"
+CursorPos = 1171
+VertPos = 540.0
 ProjectName = "Mince"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
@@ -63,7 +91,8 @@ TabLabel = "ListBox.bf"
 TabWidth = 85.0
 Type = "SourceViewPanel"
 FilePath = "Mince\\src\\Forms\\ListBox.bf"
-CursorPos = 292
+CursorPos = 1230
+VertPos = 405.0
 ProjectName = "Mince"
 
 [[MainDockingFrame.DockedWidgets]]
