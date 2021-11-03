@@ -43,7 +43,7 @@ namespace MinceTest
 			textbox = new TextBox(Form, Rect(5,120, 200,20),"");
 			textbox.Changed.Add( new => this.TextEntered);
 
-			List<String> l = new List<String>();
+			List<String> l = scope List<String>();
 			l.Add("Line 1");
 			l.Add("Line 2");
 			l.Add("Line 3");
@@ -54,17 +54,13 @@ namespace MinceTest
 			l.Add("Line 8");
 			l.Add("Line 9");
 			l.Add("Line 10");
-			Font f = new Font();
+			Font f = scope Font();
 			f.Size = 12;
 
 			listview = new ListView(Form, Rect(5,150, 200, 100),l, f);
 
 			listbox = new ListBox(Form, Rect(5,270, 200, 100),l,f);
 			listbox.Selected.Add( new => this.ListSelected);
-
-
-			delete l;
-			delete f;
 
 			Run();
 		}
