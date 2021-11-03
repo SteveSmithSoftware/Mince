@@ -5,7 +5,7 @@ using Mince.Core;
 
 namespace MinceTest
 {
-	class Form : Window
+	class Form : DesktopWindow
 	{
 		Text text;
 		Button button;

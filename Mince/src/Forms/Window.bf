@@ -15,12 +15,6 @@ namespace Mince.Forms
 		Queue<Graphics.Texture> textures = new .();
 		List<Control> affected = new List<Control>() ~ delete _;
 
-		public bool hasTooStrip = true;
-		public Panel ToolStrip;
-		public Panel Form;
-		public bool hasStatusBar = true;
-		public Panel StatusBar;
-
 		public this(StringView title, Size size) {
 			rect.Size = size;
 			graphics = new Graphics(this, title, Point(0,0), size);
@@ -31,36 +25,13 @@ namespace Mince.Forms
 			graphics.mouseup.Add( new => this.MouseUp);
 			graphics.mousescroll.Add( new => this.MouseScroll);
 			graphics.mousemove.Add( new => this.MouseMove);
-
-			int32 usedH = 0;
-			int32 tsH=50;
-			if (hasTooStrip) {
-				ToolStrip = new Panel(this, Rect(0,0,size.Width,tsH));
-				ToolStrip.Background.Color=Theme.toolStripBg;
-				ToolStrip.hasFrame=true;
-				usedH+=tsH;
-			} else tsH=0;
-
-			int32 sbH=30;
-			if (hasStatusBar) {
-				StatusBar = new Panel(this, Rect(0,size.Height-sbH,size.Width,sbH));
-				StatusBar.Background.Color=Theme.statusBarBg;
-				StatusBar.hasFrame=true;
-				usedH+=sbH;
-			} else sbH=0;
-
-			Form = new Panel(this, Rect(0,tsH,size.Width,size.Height-usedH),true,true);
-			Form.Background.Color=Theme.formBg;
 		}
 		
 		public ~this() {
 			if (controls != null) DeleteAndNullify!(controls);
 			if (textures != null) DeleteAndNullify!(textures);
 			if (graphics != null) DeleteAndNullify!(graphics);
-			if (ToolStrip != null) DeleteAndNullify!(ToolStrip);
-			if (Form != null) DeleteAndNullify!(Form);
-			if (StatusBar != null) DeleteAndNullify!(StatusBar);
-}
+		}
 		
 		public void Run() {
 			graphics.Loop();
