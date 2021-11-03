@@ -7,13 +7,7 @@ namespace Mince.Forms
 	{
 		public int32 Index;
 
-		public this(Window window, Rect rect, int32 index, bool check=false) : base(window, rect) {
-			Index = index;
-			Checked = check;
-			base.init(check);
-		}
-		
-		public this(Control parent, Rect rect, int32 index, bool check=false) : base(parent,rect) {
+		public this(Object parent, Rect rect, int32 index, bool check=false) : base(parent,rect) {
 			Index = index;
 			Checked = check;
 			base.init(check);

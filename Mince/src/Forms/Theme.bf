@@ -13,12 +13,15 @@ namespace Mince.Forms
 		public static Color buttonBg = Color.lightslategray;
 		public static Color buttonBorder = Color.white;
 		public static Color buttonText = Color.white;
-		public static Color scrollBg = Color.lightslategray;
-		public static Color scrollThumb = Color.darkgray;
-		public static String checkBox = new String("cross.bmp") ~ delete _;
-		public static String checkBoxChecked = new String("tick.bmp") ~ delete _;
+		public static Color scrollBg = Color.darkgray;
+		public static Color scrollThumb = Color.lightslategray;
+		public static String checkBox = new String("cross.png") ~ delete _;
+		public static String checkBoxChecked = new String("tick.png") ~ delete _;
 		public static ImageIdx radioButton = ImageIdx.RadioOff;
 		public static ImageIdx radioButtonChecked = ImageIdx.RadioOn;
+		public static Color listBg = Color.gainsboro;
+		public static Color listSelect = Color(255,255,255,120);
+
 
         public enum ImageIdx
         {

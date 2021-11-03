@@ -85,7 +85,7 @@ namespace Mince.Forms
 
 		public void Paint() {
 			for (Control c in controls) {
-				c.Paint();
+				if (c.isVisible) c.Paint();
 			}
 		};
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Mince.Forms;
 using Mince.Core;
 
@@ -13,12 +14,15 @@ namespace MinceTest
 		RadioButton radiobutton;
 		RadioButton radiobutton1;
 		RadioGroup radiogroup;
+		TextBox textbox;
+		ListView listview;
+		ListBox listbox;
 
 		public this(StringView title) :base(title, Size(800,640))
 		{
-			text = new Text(StatusBar, "Hello World", Rect(5,5,0,0));
+			text = new Text(StatusBar, Rect(5,5,0,0), "Hello World");
 
-			button = new Button(Form, "Press Me", Rect(5,5,100,20));
+			button = new Button(Form, Rect(5,5,100,20), "Press Me");
 			button.Click.Add( new =>  this.ButtonClick);
 
 			checkbox = new CheckBox(Form, Rect(5,30,20,20));
@@ -35,6 +39,31 @@ namespace MinceTest
 
 			radiogroup = new RadioGroup(Form, Rect(5,80, 110, 32), 5);
 			radiogroup.Click.Add( new => this.RadioGroupClick);
+
+			textbox = new TextBox(Form, Rect(5,120, 200,20),"");
+			textbox.Changed.Add( new => this.TextEntered);
+
+			List<String> l = new List<String>();
+			l.Add("Line 1");
+			l.Add("Line 2");
+			l.Add("Line 3");
+			l.Add("Line 4");
+			l.Add("Line 5");
+			l.Add("Line 6");
+			l.Add("Line 7");
+			l.Add("Line 8");
+			l.Add("Line 9");
+			l.Add("Line 10");
+			Font f = new Font();
+			f.Size = 12;
+
+			listview = new ListView(Form, Rect(5,150, 200, 100),l, f);
+
+			listbox = new ListBox(Form, Rect(5,270, 200, 100),l,f);
+
+
+			delete l;
+			delete f;
 
 			Run();
 		}
@@ -68,6 +97,13 @@ namespace MinceTest
 			String s = scope String("Radio Group Changed. Selected Button is ");
 			s.Append(rb.Index.ToString(.. scope String()));
 			text.SetText(s);
+		}
+
+		public void TextEntered(TextEvent event) {
+			String s = scope String("Text Changed to ");
+			s.Append(event.Text);
+			text.SetText(s);
+
 		}
 	}
 }

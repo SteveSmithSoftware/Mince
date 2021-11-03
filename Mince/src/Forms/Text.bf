@@ -8,11 +8,7 @@ namespace Mince.Forms
 		public String Text = new String();
 		public Font Font = new Font();
 
-		public this(Window window, StringView text, Rect rect) : base(window, rect) {
-			text.ToString(Text);
-		}
-		
-		public this(Control parent, StringView text, Rect rect) : base(parent,rect) {
+		public this(Object parent, Rect rect, StringView text) : base(parent,rect) {
 			text.ToString(Text);
 		}
 		public ~this() {

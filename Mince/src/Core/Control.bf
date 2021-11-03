@@ -11,6 +11,7 @@ namespace Mince.Core
 		public bool IsDirty=true;
 		public bool isVisible=true;
 		public bool hasFocus=false;
+		protected bool mousedown=false;
 		public bool isMouseOver=false;
 		public bool Mouseenter=false;
 		public bool Mouseexit=false;
@@ -20,20 +21,53 @@ namespace Mince.Core
 		
 		public Graphics.Texture texture;
 
-		public virtual bool KeyUp(KeyEvent event) {
-			 return false;
+		public int32 Width {
+			get { return Rect.Size.Width; }
+			set {
+				if (texture != null) delete texture;
+				Rect.Size.Width = value;
+				texture = new Graphics.Texture(Rect);
+				IsDirty=true;
+			}
 		}
+
+		public int32 Height {
+			get { return Rect.Size.Height; }
+			set {
+				if (texture != null) delete texture;
+				Rect.Size.Height = value;
+				texture = new Graphics.Texture(Rect);
+				IsDirty=true;
+			}
+		}
+
+		public Rect DisplayRect {
+			get { if (texture != null) return texture.DisplayRect; else return Rect(0,0,Rect.Size.Width, Rect.Size.Height); }
+			set {
+				if (texture != null) {
+					texture.DisplayRect = value;
+					Rect r = value;
+					r.Position.X += Rect.Position.X;
+					r.Position.Y += Rect.Position.Y;
+					for (Control child in children) {
+						if (r.Contains(child.Rect)) child.isVisible=true; else child.isVisible=false;
+					}
+				}
+			}
+		}
+
+		public virtual bool KeyUp(KeyEvent event) { return false; }
 		public virtual bool KeyDown(KeyEvent event) { return false; }
 		public virtual bool KeyPress(KeyEvent event) { return false; }
 		public virtual bool MouseDown(MouseEvent event) { return false; }
-		public virtual bool MouseUp(MouseEvent event) { return false; }
+		public virtual bool MouseUp(MouseEvent event) { mousedown=false; return false; }
 		public virtual void MouseMove(MouseEvent event) {
 			if (Mouseenter) MouseEnter(event);
 			else if (Mouseexit) MouseExit(event);
 		}
 		public virtual bool MouseScroll(MouseEvent event) { return false; }
 		public virtual void MouseEnter(MouseEvent event) {  }
-		public virtual void MouseExit(MouseEvent event) {  }
+		public virtual void MouseExit(MouseEvent event) { mousedown=false; }
 
 		protected abstract void fillTexture(Rect rect);
 
@@ -51,20 +85,18 @@ namespace Mince.Core
 			if (texture != null) DeleteAndNullify!(texture);
 		}
 		
-		public this(Window window, Rect rect) {
-			this.window = window;
-			Parent = null;
-			window.Add(this);
+		public this(Object parent, Rect rect) {
 			Rect = rect;
-			texture = new Graphics.Texture(rect);
-		}
-
-		public this(Control parent, Rect rect) {
-			this.window = null;
-			Parent = parent;
-			parent.Add(this);
-			Rect = rect;
-			Rect.Position.Add(Parent.Rect.Position);
+			if (parent is Control) {
+				window = null;
+				Parent = (Control)parent;
+				Parent.Add(this);
+				Rect.Position.Add(Parent.Rect.Position);
+			} else {
+				window = (Window)parent;
+				Parent = null;
+				window.Add(this);
+			}
 			texture = new Graphics.Texture(rect);
 		}
 
@@ -80,7 +112,9 @@ namespace Mince.Core
 		}
 
 		public virtual void Paint() {
-			Paint(Rect);
+			if (isVisible) {
+				Paint(Rect);
+			}
 		}
 
 		protected virtual void Paint(Rect rect) {
@@ -89,7 +123,7 @@ namespace Mince.Core
 			texture.Rect = rect;
 			AddTexture(texture);
 			for (Control child in children) {
-				child.Paint();
+				if (child.isVisible) child.Paint();
 			}
 		}
 

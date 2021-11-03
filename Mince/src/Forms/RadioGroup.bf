@@ -11,11 +11,7 @@ namespace Mince.Forms
 
 		public System.Event<MouseDlg> Click ~ _.Dispose();
 
-		public this(Window window, Rect rect, int32 count) : base(window, rect) {
-			init(count);
-		}
-
-		public this(Control parent, Rect rect,int32 count) : base(parent,rect) {
+		public this(Object parent, Rect rect,int32 count) : base(parent,rect) {
 			init(count);
 		}
 
@@ -47,8 +43,10 @@ namespace Mince.Forms
 		public void ButtonClick(MouseEvent event) {
 			RadioButton rb = (RadioButton)event.Sender;
 			for (int32 i=0;i<Count;i++) {
-				if (i == rb.Index) buttons[i].SetChecked(true);
-				else buttons[i].SetChecked(false);
+				if (i == rb.Index) {
+					if (!buttons[i].Checked) buttons[i].SetChecked(true);
+				}
+				else if (buttons[i].Checked) buttons[i].SetChecked(false);
 			}
 			Click(event);
 		}

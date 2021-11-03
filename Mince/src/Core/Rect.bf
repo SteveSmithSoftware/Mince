@@ -19,5 +19,11 @@ namespace Mince.Core
 			if (p.X >= Position.X && p.Y >= Position.Y && p.X <= (Position.X+Size.Width) && p.Y <= Position.Y + Size.Height) return true;
 			return false;
 		}
+
+		public bool Contains(Rect r) {
+			if (r.Position.X >= Position.X && r.Position.Y >= Position.Y && r.Position.X+r.Size.Width <= (Position.X+Size.Width) && r.Position.Y+r.Size.Height <= Position.Y + Size.Height)
+				 return true;
+			return false;
+		}
 	}
 }

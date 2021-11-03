@@ -38,6 +38,7 @@ namespace Mince.Core
 
 		KeyEvent keyevent = new KeyEvent(this) ~ delete _;
 		MouseEvent mouseevent = new MouseEvent(this) ~ delete _;
+		TextEvent textevent = new TextEvent(this) ~ delete _;
 		Event event = new Event(this) ~ delete _;
 
 		Thread loopThread;
@@ -98,28 +99,28 @@ namespace Mince.Core
 						quit();
 						return;
 					case .KeyDown:
-						Key(event.key);
+						Key(ref event.key);
 						break;
 					case .KeyUp:
-						Key(event.key);
+						Key(ref event.key);
 						break;
 					case .MouseButtonDown:
-						Mouse(event.button);
+						Mouse(ref event.button);
 						break;
 					case .MouseButtonUp:
-						Mouse(event.button);
+						Mouse(ref event.button);
 						break;
 					case .MouseMotion:
-						MouseMove(event);
+						MouseMove(ref event);
 						break;
 					case .MouseWheel:
-						MouseScroll(event);
+						MouseScroll(ref event);
 						break;
 					default:
 						break;
 					}
 
-					HandleEvent(event);
+					HandleEvent(ref event);
 
 					waitTime = 0;
 				}
@@ -154,16 +155,21 @@ namespace Mince.Core
 		{
 			paint();
 			SDL.Rect* r = scope SDL.Rect();
+			SDL.Rect* dr = scope SDL.Rect();
 			bool doPaint=false;
 			while (true)
 			{
 				Texture t = parent.GetTexture();
 				if (t==null) break;
 				t.ToSDLRect(r);
+				ToSDLRect(t.DisplayRect, dr);
+				r.w = dr.w;
+				r.h = dr.h;
+				SDL.SetTextureBlendMode(t.Texture, SDL.BlendMode.Blend);
 				if (t.Rotate) {
-					SDL.RenderCopyEx(renderer, t.Texture,null,r,180,null,0);
+					SDL.RenderCopyEx(renderer, t.Texture,dr,r,180,null,0);
 				} else {
-					SDL.RenderCopy(renderer, t.Texture, null, r);
+					SDL.RenderCopy(renderer, t.Texture, dr, r);
 				}
 				doPaint=true;
 			}
@@ -171,7 +177,7 @@ namespace Mince.Core
 		}
 
 
-		void Key(SDL.KeyboardEvent evt)
+		void Key(ref SDL.KeyboardEvent evt)
 		{
 			keyevent.Code = (KeyCode)evt.keysym.sym;
 			keyevent.Scan = (ScanCode)evt.keysym.scancode;
@@ -201,7 +207,7 @@ namespace Mince.Core
 			}
 		}
 
-		void Mouse(SDL.MouseButtonEvent evt)
+		void Mouse(ref SDL.MouseButtonEvent evt)
 		{
 			mouseevent.Position.X = evt.x;
 			mouseevent.Position.Y = evt.y;
@@ -223,7 +229,7 @@ namespace Mince.Core
 			}
 		}
 
-		void MouseMove(SDL.Event evt)
+		void MouseMove(ref SDL.Event evt)
 		{
 			mouseevent.Position.X = evt.motion.x;
 			mouseevent.Position.Y = evt.motion.y;
@@ -234,7 +240,7 @@ namespace Mince.Core
 			mousemove(mouseevent);
 		}
 
-		void MouseScroll(SDL.Event evt)
+		void MouseScroll(ref SDL.Event evt)
 		{
 			mouseevent.Delta.X = evt.wheel.x;
 			mouseevent.Delta.Y = evt.wheel.y;
@@ -243,7 +249,7 @@ namespace Mince.Core
 			mousescroll(mouseevent);
 		}
 
-		void HandleEvent(SDL.Event evt)
+		void HandleEvent(ref SDL.Event evt)
 		{
 			event.Event = .Unknown;
 			genericevent(event);
@@ -255,9 +261,19 @@ namespace Mince.Core
 			SDL.SetCursor(this.cursor);
 		}
 
+		public void ToSDLRect(Rect rect, SDL.Rect* r)
+		{
+			r.x = rect.Position.X;
+			r.y = rect.Position.Y;
+			r.w = rect.Size.Width;
+			r.h = rect.Size.Height;
+		}
+
 		void CreateIcons() {
 			SDL.Surface* images;
-			images = SDL.SDL_LoadBMP(@"UI.bmp");
+			SDLImage.Init(SDLImage.InitFlags.PNG);
+			//images = SDL.SDL_LoadBMP(@"UI.bmp");
+			images = SDLImage.Load(@"UI.png");
 			if (images != null) {
 	
 				int32 size = 20;
@@ -285,6 +301,7 @@ namespace Mince.Core
 */
 			}
 			SDL.FreeSurface(images);
+			SDLImage.Quit();
 		}
 
 		public class Texture
@@ -292,10 +309,12 @@ namespace Mince.Core
 			public Rect Rect;
 			public SDL.Texture* Texture;
 			public bool Rotate=false;
+			public Rect DisplayRect;
 
 			public this(Rect rect)
 			{
 				Rect = rect;
+				DisplayRect = Rect(0,0,rect.Size.Width, rect.Size.Height);
 			}
 
 			public ~this() {
@@ -327,8 +346,54 @@ namespace Mince.Core
 				uint32 format=0;
 				int32 access =0;
 				SDL.QueryTexture(Texture, out format, out access, out Rect.Size.Width, out Rect.Size.Height);
+				DisplayRect.Size = Rect.Size;
 				SDLTTF.CloseFont(sdlfont);
 				SDL.FreeSurface(surface);
+			}
+
+			public void AddText(SDL2 g, String text, Mince.Core.Font font, Mince.Core.Rect rect) {
+				Rect r1 = rect;
+				String fullName = font.FullName(.. scope String());
+				SDLTTF.Font* sdlfont = SDLTTF.OpenFont(fullName, font.Size);
+				SDL.Color color = SDL.Color( font.Color.R, font.Color.G, font.Color.B, font.Color.A );
+				SDL.Surface* surface = SDLTTF.RenderText_Solid(sdlfont,text, color); 
+				SDL.Texture* texture = SDL.CreateTextureFromSurface(g.renderer, surface);
+				uint32 format=0;
+				int32 access =0;
+				SDL.QueryTexture(texture, out format, out access, out r1.Size.Width, out r1.Size.Height);
+				SDL.SetTextureBlendMode(texture, SDL.BlendMode.Blend);
+				SDL.SetRenderTarget(g.renderer, Texture);
+				SDL.Rect* r = scope SDL.Rect();
+				g.ToSDLRect(r1,r);
+				SDL.RenderCopy(g.renderer, texture, null, r);
+				SDL.SetRenderTarget(g.renderer, null);
+				SDL.DestroyTexture(texture);
+				SDLTTF.CloseFont(sdlfont);
+				SDL.FreeSurface(surface);
+			}
+
+			public void AddText(SDL2 g, List<String> text, Mince.Core.Font font, Mince.Core.Rect rect,int32 start, int32 count, int32 pitch=2) {
+				Rect r1 = rect;
+				uint32 format=0;
+				int32 access =0;
+				String fullName = font.FullName(.. scope String());
+				SDLTTF.Font* sdlfont = SDLTTF.OpenFont(fullName, font.Size);
+				SDL.Color color = SDL.Color( font.Color.R, font.Color.G, font.Color.B, font.Color.A );
+				SDL.SetRenderTarget(g.renderer, Texture);
+				SDL.Rect* r = scope SDL.Rect();
+				for (int i=start;i<start+count;i++) {
+					SDL.Surface* surface = SDLTTF.RenderText_Solid(sdlfont,text[i], color); 
+					SDL.Texture* texture = SDL.CreateTextureFromSurface(g.renderer, surface);
+					SDL.QueryTexture(texture, out format, out access, out r1.Size.Width, out r1.Size.Height);
+					SDL.SetTextureBlendMode(texture, SDL.BlendMode.Blend);
+					g.ToSDLRect(r1,r);
+					SDL.RenderCopy(g.renderer, texture, null, r);
+					SDL.DestroyTexture(texture);
+					SDL.FreeSurface(surface);
+					r1.Position.Y += font.Size+pitch;
+				}
+				SDL.SetRenderTarget(g.renderer, null);
+				SDLTTF.CloseFont(sdlfont);
 			}
 
 			public void DrawFrame(SDL2 g, Color c, int32 width) {
@@ -349,7 +414,9 @@ namespace Mince.Core
 
 			public void FillImage(SDL2 g, String name) {
 				SDL.Surface* image;
-				image = SDL.SDL_LoadBMP(name);
+				SDLImage.Init(SDLImage.InitFlags.PNG);
+				image = SDLImage.Load(name);
+				//image = SDL.SDL_LoadBMP(name);
 				if (image != null) {
 					SDL.Surface* surface = SDL.CreateRGBSurface(0, Rect.Size.Width, Rect.Size.Height, 32,g.rmask, g.gmask, g.bmask, g.amask);
 					SDL.SDL_BlitScaled(image, null, surface, null);
@@ -357,6 +424,7 @@ namespace Mince.Core
 					SDL.FreeSurface(surface);
 				}
 				SDL.FreeSurface(image);
+				SDLImage.Quit();
 			}
 
 			public void FillImage(SDL2 g, int32 ix) {

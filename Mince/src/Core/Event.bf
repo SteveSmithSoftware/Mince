@@ -5,6 +5,8 @@ namespace Mince.Core
 	delegate void KeyDlg(KeyEvent event);
 	delegate void MouseDlg(MouseEvent event);
 	delegate void EventDlg(Event event);
+	delegate void TextDlg(TextEvent event);
+	delegate void ScrollDlg(ScrollEvent event);
 
 	public class Event
 	{
@@ -15,6 +17,7 @@ namespace Mince.Core
 			MouseUp,
 			MouseMove,
 			MouseScroll,
+			Text,
 			Unknown
 		}
  		public Object Sender;

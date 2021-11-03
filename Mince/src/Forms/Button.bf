@@ -9,15 +9,9 @@ namespace Mince.Forms
 
 		public System.Event<MouseDlg> Click ~ _.Dispose();
 
-		bool mousedown=false;
-
 		MouseEvent evt = new MouseEvent(this) ~ delete _;
 
-		public this(Window window, StringView text, Rect rect) : base(window, rect) {
-			init(text);
-		}
-		
-		public this(Control parent, StringView text, Rect rect) : base(parent,rect) {
+		public this(Object parent, Rect rect, StringView text) : base(parent,rect) {
 			init(text);
 		}
 		public ~this() {
@@ -36,7 +30,7 @@ namespace Mince.Forms
 				Rect rect = Rect(0,0,Rect.Size.Width,Rect.Size.Height);
 				rect.Position.X = 4;
 				rect.Position.Y = 4;
-				Text = new Text(this, txt, rect);
+				Text = new Text(this, rect, txt);
 				Text.Font.Color = Theme.buttonText;
 				Text.Font.Size = 12;
 			}

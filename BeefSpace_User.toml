@@ -1,12 +1,12 @@
 FileVersion = 1
 LastConfig = "Debug"
 LastPlatform = "Win64"
-RecentFilesList = ["MinceTest\\src\\Form.bf", "Mince\\src\\Forms\\CheckBox.bf", "Mince\\src\\Forms\\Button.bf", "Mince\\src\\Forms\\Window.bf", "Mince\\src\\Core\\Control.bf", "Mince\\src\\Core\\Event.bf", "Mince\\src\\Core\\SDL2.bf", "Mince\\src\\Forms\\Theme.bf", "z:\\Development\\Beef\\BeefLibs\\SDL2\\src\\SDL2.bf", "Mince\\src\\Forms\\RadioButton.bf", "Mince\\src\\Forms\\RadioGroup.bf", "Mince\\src\\Core\\KeyEvent.bf", "z:\\Development\\Beef\\BeefLibs\\corlib\\src\\Event.bf", "Mince\\src\\Core\\Frame.bf", "Mince\\src\\Forms\\Panel.bf", "Mince\\src\\Forms\\ScrollBarHoriz.bf"]
+RecentFilesList = ["Mince\\src\\Core\\Event.bf", "Mince\\src\\Forms\\ListBox.bf", "Mince\\src\\Forms\\ListView.bf"]
 
 [MainWindow]
-X = 2236
-Y = 0
-Width = 1224
+X = 2266
+Y = 175
+Width = 1405
 Height = 905
 ShowKind = "Maximized"
 
@@ -42,130 +42,28 @@ DefaultDocumentsTabbedView = true
 Type = "TabbedView"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "SDL2.bf"
-TabWidth = 84.0
-Type = "SourceViewPanel"
-FilePath = "z:\\Development\\Beef\\BeefLibs\\SDL2\\src\\SDL2.bf"
-CursorPos = 95929
-VertPos = 54810.84
-ProjectName = "SDL2"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "Theme.bf"
-TabWidth = 94.0
-Type = "SourceViewPanel"
-FilePath = "Mince\\src\\Forms\\Theme.bf"
-CursorPos = 5327
-VertPos = 2726.0
-ProjectName = "Mince"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "RadioGroup.bf"
-TabWidth = 116.0
-Type = "SourceViewPanel"
-FilePath = "Mince\\src\\Forms\\RadioGroup.bf"
-CursorPos = 1129
-ProjectName = "Mince"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "RadioButton.bf"
-TabWidth = 116.0
-Type = "SourceViewPanel"
-FilePath = "Mince\\src\\Forms\\RadioButton.bf"
-CursorPos = 602
-ProjectName = "Mince"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "ScrollBarHoriz.bf"
-TabWidth = 127.0
-Type = "SourceViewPanel"
-FilePath = "Mince\\src\\Forms\\ScrollBarHoriz.bf"
-ProjectName = "Mince"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+Active = true
 TabLabel = "Event.bf"
 TabWidth = 76.0
 Type = "SourceViewPanel"
-FilePath = "z:\\Development\\Beef\\BeefLibs\\corlib\\src\\Event.bf"
-CursorPos = 3848
-VertPos = 2625.0
-ProjectName = "corlib"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "Window.bf"
-TabWidth = 92.0
-Type = "SourceViewPanel"
-FilePath = "Mince\\src\\Forms\\Window.bf"
-CursorPos = 4243
-VertPos = 2070.0
+FilePath = "Mince\\src\\Core\\Event.bf"
+CursorPos = 230
 ProjectName = "Mince"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "Control.bf"
-TabWidth = 88.0
+TabLabel = "ListView.bf"
+TabWidth = 91.0
 Type = "SourceViewPanel"
-FilePath = "Mince\\src\\Core\\Control.bf"
-CursorPos = 1120
-VertPos = 225.0
+FilePath = "Mince\\src\\Forms\\ListView.bf"
+CursorPos = 240
 ProjectName = "Mince"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "Frame.bf"
-TabWidth = 81.0
+TabLabel = "ListBox.bf"
+TabWidth = 85.0
 Type = "SourceViewPanel"
-FilePath = "Mince\\src\\Core\\Frame.bf"
-CursorPos = 300
-ProjectName = "Mince"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "Panel.bf"
-TabWidth = 76.0
-Type = "SourceViewPanel"
-FilePath = "Mince\\src\\Forms\\Panel.bf"
-CursorPos = 1469
-ProjectName = "Mince"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-Active = true
-TabLabel = "Form.bf"
-TabWidth = 75.0
-Type = "SourceViewPanel"
-FilePath = "MinceTest\\src\\Form.bf"
-CursorPos = 1069
-ProjectName = "MinceTest"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "Button.bf"
-TabWidth = 82.0
-Type = "SourceViewPanel"
-FilePath = "Mince\\src\\Forms\\Button.bf"
-CursorPos = 1897
-VertPos = 1001.0
-ProjectName = "Mince"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "CheckBox.bf"
-TabWidth = 100.0
-Type = "SourceViewPanel"
-FilePath = "Mince\\src\\Forms\\CheckBox.bf"
-CursorPos = 2074
-ProjectName = "Mince"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "KeyEvent.bf"
-TabWidth = 97.0
-Type = "SourceViewPanel"
-FilePath = "Mince\\src\\Core\\KeyEvent.bf"
-CursorPos = 11461
-ProjectName = "Mince"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "SDL2.bf"
-TabWidth = 74.0
-Type = "SourceViewPanel"
-FilePath = "Mince\\src\\Core\\SDL2.bf"
-CursorPos = 5842
-VertPos = 3375.0
+FilePath = "Mince\\src\\Forms\\ListBox.bf"
+CursorPos = 292
 ProjectName = "Mince"
 
 [[MainDockingFrame.DockedWidgets]]

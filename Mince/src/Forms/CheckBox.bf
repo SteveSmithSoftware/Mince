@@ -10,13 +10,7 @@ namespace Mince.Forms
 		public System.Event<MouseDlg> Click ~ _.Dispose();
 		MouseEvent evt = new MouseEvent(this) ~ delete _;
 
-		bool mousedown=false;
-
-		public this(Window window, Rect rect, bool check=false) : base(window, rect) {
-			init(check);
-		}
-		
-		public this(Control parent, Rect rect, bool check=false) : base(parent,rect) {
+		public this(Object parent, Rect rect, bool check=false) : base(parent,rect) {
 			init(check);
 		}
 
