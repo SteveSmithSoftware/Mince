@@ -7,13 +7,14 @@ namespace Mince.Forms
 	public class ListBox : ListView
 	{
 		Panel selectBox;
-		public int32 Selected=0;
+		public int32 Index=0;
+		public StringView SelectedText;
 
 		public this(Object parent, Rect rect, List<String> text, Font font) : base(parent,rect,text,font) {
-			init(text,font);
+			init();
 		}
 
-		void init(List<String> text, Font font) {
+		void init() {
 			selectBox = new Panel(this, Rect(0,0,Rect.Size.Width, font.Size+3));
 			selectBox.Background.Color = Theme.listSelect;
 		}
@@ -23,9 +24,10 @@ namespace Mince.Forms
 			if (newPos < Rect.Position.Y || newPos > (Rect.Position.Y+Rect.Size.Height)) {
 				base.Scroll(dir);
 			} else {
-				selectBox.Rect.Position.Y += (dir * (font.Size+3));
+				selectBox.Rect.Position.Y = newPos;
 			}
-			Selected += dir;
+			Index += dir;
+			SelectedText = lines[Index];
 		}
 	}
 }
