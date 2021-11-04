@@ -14,6 +14,7 @@ Tools so far :-
     RadioGroup - Select one of many RadioButtons
     ListView - Scrollable Text Panel
     ListBox - Selectable ListView
+    DropDown - Popup ListBox
     
     See MinceTest for an example of usage.
     
