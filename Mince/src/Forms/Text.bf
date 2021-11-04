@@ -6,11 +6,14 @@ namespace Mince.Forms
 	public class Text : Control
 	{
 		public String Text = new String();
-		public Font Font = new Font();
+		public Font Font ;
 
-		public this(Object parent, Rect rect, StringView text) : base(parent,rect) {
+		public this(Object parent, Rect rect, StringView text, Font font=null) : base(parent,rect) {
 			text.ToString(Text);
+			if (font != null) Font = new Font(font);
+			else Font = new Font();
 		}
+
 		public ~this() {
 			delete Text;
 			delete Font;

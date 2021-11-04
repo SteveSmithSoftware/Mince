@@ -17,6 +17,7 @@ namespace MinceTest
 		TextBox textbox;
 		ListView listview;
 		ListBox listbox;
+		DropDown dropdown;
 
 		public this(StringView title) :base(title, Size(800,640))
 		{
@@ -57,10 +58,13 @@ namespace MinceTest
 			Font f = scope Font();
 			f.Size = 12;
 
-			listview = new ListView(Form, Rect(5,150, 200, 100),l, f);
+			listview = new ListView(Form, Rect(5,150, 200, 100),l, f,0);
 
-			listbox = new ListBox(Form, Rect(5,270, 200, 100),l,f);
+			listbox = new ListBox(Form, Rect(250,150, 200, 100),l,f,0);
 			listbox.Selected.Add( new => this.ListSelected);
+
+			dropdown = new DropDown(Form, Rect(5,270,200,20),l,f,2,5);
+			dropdown.Selected.Add( new => this.DropDownSelected);
 
 			Run();
 		}
@@ -110,7 +114,15 @@ namespace MinceTest
 			s.Append(" selected. Item text: ");
 			s.Append(lb.SelectedText);
 			text.SetText(s);
+		}
 
+		public void DropDownSelected(Event event) {
+			DropDown dd  = (DropDown)event.Sender;
+			String s = scope String("Dropdown Item ");
+			s.Append(dd.Index.ToString(.. scope String()));
+			s.Append(" selected. Item text: ");
+			s.Append(dd.SelectedText);
+			text.SetText(s);
 		}
 	}
 }

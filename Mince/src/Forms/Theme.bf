@@ -21,6 +21,7 @@ namespace Mince.Forms
 		public static ImageIdx radioButtonChecked = ImageIdx.RadioOn;
 		public static Color listBg = Color.gainsboro;
 		public static Color listSelect = Color(255,255,255,120);
+		public static Color dropDownBg = Color.gainsboro;
 
 
         public enum ImageIdx
