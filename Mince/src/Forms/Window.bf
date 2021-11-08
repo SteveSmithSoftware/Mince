@@ -13,6 +13,7 @@ namespace Mince.Forms
 		Graphics graphics;
 
 		Queue<Graphics.Texture> textures = new .();
+		Queue<Graphics.Texture> menus = new .();
 		List<Control> affected = new List<Control>() ~ delete _;
 
 		public this(StringView title, Size size) {
@@ -30,6 +31,7 @@ namespace Mince.Forms
 		public ~this() {
 			if (controls != null) DeleteAndNullify!(controls);
 			if (textures != null) DeleteAndNullify!(textures);
+			if (menus != null) DeleteAndNullify!(menus);
 			if (graphics != null) DeleteAndNullify!(graphics);
 		}
 		
@@ -42,11 +44,19 @@ namespace Mince.Forms
 		}
 
 		public void AddTexture(Graphics.Texture texture) {
-			textures.Enqueue(texture);
+			if (texture.IsMenu) {
+				menus.Enqueue(texture);
+			}
+			else {
+				textures.Enqueue(texture);
+			}
 		}
 
 		public Graphics.Texture GetTexture() {
 			if (textures.Count>0) return textures.Dequeue();
+			if (menus.Count>0) {
+				return menus.Dequeue();
+			}
 			return null;
 		}
 
@@ -96,7 +106,7 @@ namespace Mince.Forms
 					if (!child.isMouseOver) child.Mouseenter=true;
 					else child.Mouseenter=false;
 					child.isMouseOver=true;
-					child.FindAffected(p, ref affected);
+					child.FindAffected(p, ref affected, all);
 					if (!all) break;
 				} else {
 					if (child.isMouseOver) {
@@ -136,7 +146,6 @@ namespace Mince.Forms
 					break;
 				case Event.EventType.MouseMove:
 					affected[i].MouseMove((MouseEvent)event);
-					if (!event.Bubble) return true;
 					break;
 				case Event.EventType.MouseScroll:
 					if (affected[i].MouseScroll((MouseEvent)event)) {

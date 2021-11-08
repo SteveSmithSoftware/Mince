@@ -15,6 +15,7 @@ Tools so far :-
     ListView - Scrollable Text Panel
     ListBox - Selectable ListView
     DropDown - Popup ListBox
+    Menu + MenuItem - Basic Menu
     
     See MinceTest for an example of usage.
     

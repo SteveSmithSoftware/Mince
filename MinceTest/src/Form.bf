@@ -18,9 +18,25 @@ namespace MinceTest
 		ListView listview;
 		ListBox listbox;
 		DropDown dropdown;
+		Menu menu;
 
 		public this(StringView title) :base(title, Size(800,640))
 		{
+			menu = new Menu(ToolStrip, Rect(4,2,ToolStrip.Rect.Size.Width-8, 20));
+			MenuItem file = menu.Add("File",Rect(0,0,50,20));
+			Menu fileMenu = new Menu(file, Rect(0,20,80,140));
+			fileMenu.Add("New", Rect(0,5,50,20),new => this.MenuItemSelected);
+			fileMenu.Add("Open", Rect(0,30,50,20),new => this.MenuItemSelected);
+			fileMenu.Add("Save", Rect(0,60,50,20),new => this.MenuItemSelected);
+			fileMenu.Add("Save As", Rect(0,90,50,20),new => this.MenuItemSelected);
+			fileMenu.Add("Exit", Rect(0,120,50,20),new => this.MenuItemSelected);
+
+			menu.Add("Edit",Rect(50,0,50,20),new => this.MenuItemSelected);
+			menu.Add("View",Rect(100,0,50,20),new => this.MenuItemSelected);
+			menu.Add("Tools",Rect(150,0,50,20),new => this.MenuItemSelected);
+			menu.Add("About",Rect(200,0,50,20),new => this.MenuItemSelected);
+			menu.Add("Help",Rect(250,0,50,20),new => this.MenuItemSelected);
+
 			text = new Text(StatusBar, Rect(5,5,0,0), "Hello World");
 
 			button = new Button(Form, Rect(5,5,100,20), "Press Me");
@@ -122,6 +138,14 @@ namespace MinceTest
 			s.Append(dd.Index.ToString(.. scope String()));
 			s.Append(" selected. Item text: ");
 			s.Append(dd.SelectedText);
+			text.SetText(s);
+		}
+
+		public void MenuItemSelected(Event event) {
+			MenuItem mi = (MenuItem)event.Sender;
+			String s = scope String("Menu Item ");
+			s.Append(mi.Title);
+			s.Append(" selected");
 			text.SetText(s);
 		}
 	}

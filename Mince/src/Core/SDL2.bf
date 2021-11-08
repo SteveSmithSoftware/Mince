@@ -310,6 +310,7 @@ namespace Mince.Core
 			public SDL.Texture* Texture;
 			public bool Rotate=false;
 			public Rect DisplayRect;
+			public bool IsMenu=false;
 
 			public this(Rect rect)
 			{

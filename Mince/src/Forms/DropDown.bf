@@ -45,6 +45,7 @@ namespace Mince.Forms
 
 		public void ButtonClick(MouseEvent event) {
 			listBox.isVisible = !listBox.isVisible;
+			if (listBox.isVisible) listBox.ScrollTo(Index);
 		}
 
 		public void ListSelected(Event event) {
@@ -54,6 +55,14 @@ namespace Mince.Forms
 			text.SetText(SelectedText);
 			listBox.isVisible=false;
 			Selected(evt);
+		}
+
+		public override void MouseExit(MouseEvent event)
+		{
+			if (!listBox.isMouseOver) {
+				listBox.isVisible=false;
+				base.MouseExit(event);
+			}
 		}
 	}
 }

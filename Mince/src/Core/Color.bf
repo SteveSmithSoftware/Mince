@@ -31,6 +31,14 @@ namespace Mince.Core
 			A = 255;
 		}
 
+		public this(Color c)
+		{
+			R = c.R;
+			G = c.G;
+			B = c.B;
+			A = c.A;
+		}
+
 		public static Color white { get { return Color(255, 255, 255); } }
 		public static Color maroon { get { return Color(128, 0, 0); } }
 		public static Color darkred { get { return Color(139, 0, 0); } }

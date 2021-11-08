@@ -22,6 +22,9 @@ namespace Mince.Forms
 		public static Color listBg = Color.gainsboro;
 		public static Color listSelect = Color(255,255,255,120);
 		public static Color dropDownBg = Color.gainsboro;
+		public static Color menuBg = Color.gainsboro;
+		public static Color menuItemBg = Color.silver;
+		public static Color menuText = Color.black;
 
 
         public enum ImageIdx

@@ -17,7 +17,7 @@ namespace Mince.Core
 		public bool Mouseexit=false;
 		Window window;
 		public Control Parent;
-		List<Control> children = new .();
+		protected List<Control> children = new .();
 		
 		public Graphics.Texture texture;
 
@@ -54,6 +54,10 @@ namespace Mince.Core
 					}
 				}
 			}
+		}
+
+		protected bool hasChildren {
+			get { return children.Count > 0; }
 		}
 
 		public virtual bool KeyUp(KeyEvent event) { return false; }
