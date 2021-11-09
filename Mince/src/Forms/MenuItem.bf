@@ -34,6 +34,9 @@ namespace Mince.Forms
 		}
 
 		void init(StringView text) {
+			Rect.Z = Menu.menuZ;
+			Text.Rect.Z = Menu.menuZ;
+
 			Title = text;
 			Text.Font.Color = Theme.menuText;
 			highLight = Theme.menuItemBg;

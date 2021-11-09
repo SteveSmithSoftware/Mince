@@ -11,10 +11,9 @@ namespace Mince.Forms
 		Rect rect = Rect();
 
 		Graphics graphics;
-
-		Queue<Graphics.Texture> textures = new .();
-		Queue<Graphics.Texture> menus = new .();
-		List<Control> affected = new List<Control>() ~ delete _;
+		const int Zlevels=6;
+		Queue<Graphics.Texture>[] textures = new Queue<Graphics.Texture>[Zlevels];
+		List<Control>[] affected = new List<Control>[Zlevels];
 
 		public this(StringView title, Size size) {
 			rect.Size = size;
@@ -26,12 +25,20 @@ namespace Mince.Forms
 			graphics.mouseup.Add( new => this.MouseUp);
 			graphics.mousescroll.Add( new => this.MouseScroll);
 			graphics.mousemove.Add( new => this.MouseMove);
+			for (int z=0;z<Zlevels;z++) {
+				textures[z] = new Queue<SDL2.Texture>();
+				affected[z] = new List<Control>();
+			}
 		}
 		
 		public ~this() {
 			if (controls != null) DeleteAndNullify!(controls);
-			if (textures != null) DeleteAndNullify!(textures);
-			if (menus != null) DeleteAndNullify!(menus);
+			for (int i=0;i<Zlevels;i++ ) {
+				DeleteAndNullify!(textures[i]);
+				DeleteAndNullify!(affected[i]);
+			}
+			DeleteAndNullify!(textures);
+			DeleteAndNullify!(affected);
 			if (graphics != null) DeleteAndNullify!(graphics);
 		}
 		
@@ -44,18 +51,12 @@ namespace Mince.Forms
 		}
 
 		public void AddTexture(Graphics.Texture texture) {
-			if (texture.IsMenu) {
-				menus.Enqueue(texture);
-			}
-			else {
-				textures.Enqueue(texture);
-			}
+			textures[texture.Rect.Z].Enqueue(texture);
 		}
 
 		public Graphics.Texture GetTexture() {
-			if (textures.Count>0) return textures.Dequeue();
-			if (menus.Count>0) {
-				return menus.Dequeue();
+			for (int i=0;i<Zlevels;i++) {
+				if (textures[i].Count>0) return textures[i].Dequeue();
 			}
 			return null;
 		}
@@ -99,61 +100,66 @@ namespace Mince.Forms
 		}
 
 		void findAffected(Point p, bool all=false) {
-			affected.Clear();
+			for (int z=0;z<Zlevels;z++) if (affected[z].Count>0) affected[z].Clear();
 			for (Control child in controls) {
-				if (child.Rect.Contains(p)) {
-					affected.Add(child);
-					if (!child.isMouseOver) child.Mouseenter=true;
-					else child.Mouseenter=false;
-					child.isMouseOver=true;
-					child.FindAffected(p, ref affected, all);
-					if (!all) break;
-				} else {
-					if (child.isMouseOver) {
-						child.Mouseexit=true;
-						child.isMouseOver=false;
-						affected.Add(child);
+				if (child.isVisible) {
+					if (child.Rect.Contains(p)) {
+						affected[child.Rect.Z].Add(child);
+						if (!child.isMouseOver) child.Mouseenter=true;
+						else child.Mouseenter=false;
+						child.isMouseOver=true;
+						child.FindAffected(p, ref affected, all);
+						if (!all) break;
 					} else {
-						child.Mouseexit=false;
+						if (child.isMouseOver) {
+							child.Mouseexit=true;
+							child.isMouseOver=false;
+							affected[child.Rect.Z].Add(child);
+						} else {
+							child.Mouseexit=false;
+						}
+						child.FindAffected(p, ref affected ,all);
 					}
-					child.FindAffected(p, ref affected ,all);
 				}
 			}
 		}
 
 		bool invokeAffected(Event event) {
-			for (int i=affected.Count-1;i>=0;i--) {
-				switch (event.Event) {
-				case Event.EventType.KeyDown:
-					if (affected[i].KeyDown((KeyEvent)event)) {
-						if (!event.Bubble) return true;
+			for (int z=Zlevels-1;z>=0;z--) {
+				for (int i=affected[z].Count-1;i>=0;i--) {
+					if (event.Event != Event.EventType.MouseMove && !affected[z][i].hasFocus) continue;
+					switch (event.Event) {
+					case Event.EventType.KeyDown:
+						if (affected[z][i].KeyDown((KeyEvent)event)) {
+							if (!event.Bubble) return true;
+						}
+						break;
+					case Event.EventType.KeyUp:
+						if (affected[z][i].KeyUp((KeyEvent)event)) {
+							if (!event.Bubble) return true;
+						}
+						break;
+					case Event.EventType.MouseDown:
+						if (affected[z][i].MouseDown((MouseEvent)event)) {
+							if (!event.Bubble) return true;
+						}
+						break;
+					case Event.EventType.MouseUp:
+						if (affected[z][i].MouseUp((MouseEvent)event)) {
+							if (!event.Bubble) return true;
+						}
+						break;
+					case Event.EventType.MouseMove:
+						affected[z][i].MouseMove((MouseEvent)event);
+						break;
+					case Event.EventType.MouseScroll:
+						if (affected[z][i].MouseScroll((MouseEvent)event)) {
+							if (!event.Bubble) return true;
+						}
+						break;
+					default:
+						break;
 					}
-					break;
-				case Event.EventType.KeyUp:
-					if (affected[i].KeyUp((KeyEvent)event)) {
-						if (!event.Bubble) return true;
-					}
-					break;
-				case Event.EventType.MouseDown:
-					if (affected[i].MouseDown((MouseEvent)event)) {
-						if (!event.Bubble) return true;
-					}
-					break;
-				case Event.EventType.MouseUp:
-					if (affected[i].MouseUp((MouseEvent)event)) {
-						if (!event.Bubble) return true;
-					}
-					break;
-				case Event.EventType.MouseMove:
-					affected[i].MouseMove((MouseEvent)event);
-					break;
-				case Event.EventType.MouseScroll:
-					if (affected[i].MouseScroll((MouseEvent)event)) {
-						if (!event.Bubble) return true;
-					}
-					break;
-				default:
-					break;
 				}
 			}
 			return false;

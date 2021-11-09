@@ -66,8 +66,13 @@ namespace Mince.Core
 		public virtual bool MouseDown(MouseEvent event) { return false; }
 		public virtual bool MouseUp(MouseEvent event) { mousedown=false; return false; }
 		public virtual void MouseMove(MouseEvent event) {
-			if (Mouseenter) MouseEnter(event);
-			else if (Mouseexit) MouseExit(event);
+			if (Mouseenter) {
+				hasFocus=true;
+				MouseEnter(event);
+			} else if (Mouseexit) {
+				MouseExit(event);
+				hasFocus=false;
+			}
 		}
 		public virtual bool MouseScroll(MouseEvent event) { return false; }
 		public virtual void MouseEnter(MouseEvent event) {  }
@@ -139,22 +144,24 @@ namespace Mince.Core
 			}
 		}
 
-		public void FindAffected(Point p, ref List<Control> affected, bool all=false) {
+		public void FindAffected(Point p, ref List<Control>[] affected, bool all=false) {
 			for (Control child in children) {
-				if (child.Rect.Contains(p)) {
-					if (!child.isMouseOver) child.Mouseenter=true;
-					else child.Mouseenter=false;
-					child.isMouseOver=true;
-					affected.Add(child);
-					child.FindAffected(p, ref affected ,all);
-					if (!all) break;
-				} else {
-					if (child.isMouseOver) {
-						child.isMouseOver=false;
-						child.Mouseexit=true;
-						affected.Add(child);
-					} else child.Mouseexit=false;
-					child.FindAffected(p, ref affected ,all);
+				if (child.isVisible) {
+					if (child.Rect.Contains(p)) {
+						if (!child.isMouseOver) child.Mouseenter=true;
+						else child.Mouseenter=false;
+						child.isMouseOver=true;
+						affected[child.Rect.Z].Add(child);
+						child.FindAffected(p, ref affected ,all);
+						if (!all) break;
+					} else {
+						if (child.isMouseOver) {
+							child.isMouseOver=false;
+							child.Mouseexit=true;
+							affected[child.Rect.Z].Add(child);
+						} else child.Mouseexit=false;
+						child.FindAffected(p, ref affected ,all);
+					}
 				}
 			}
 		}
