@@ -34,17 +34,15 @@ namespace Mince.Forms
 		}
 
 		void init(StringView text) {
-			Rect.Z = Menu.menuZ;
-			Text.Rect.Z = Menu.menuZ;
+			Rect.Z = menuZ;
+			for (Control c in children) {
+				c.Rect.Z = menuZ;
+			}
 
 			Title = text;
 			Text.Font.Color = Theme.menuText;
 			highLight = Theme.menuItemBg;
 			Background.Color = ((Menu)Parent).Background.Color;
-			texture.IsMenu=true;
-			for (Control c in children) {
-				c.texture.IsMenu=true;
-			}
 			hasFrame = false;
 		}
 

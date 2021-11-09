@@ -7,6 +7,10 @@ namespace Mince.Core
 {
 	public abstract class Control
 	{
+		public static int32 defaultZ=2;
+		public static int32 menuZ=4;
+
+
 		public Rect Rect;
 		public bool IsDirty=true;
 		public bool isVisible=true;

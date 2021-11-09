@@ -4,7 +4,7 @@ namespace Mince.Core
 	{
 		public Point Position;
 		public Size Size;
-		public int32 Z=2;
+		public int32 Z=Control.defaultZ;
 
 		public this() {
 			Position = Point();

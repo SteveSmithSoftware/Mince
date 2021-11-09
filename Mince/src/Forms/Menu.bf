@@ -6,8 +6,6 @@ namespace Mince.Forms
 {
 	public class Menu : Panel
 	{
-		public static int32 menuZ=4;
-
 		public this(Object parent, Rect rect) : base(parent,rect,false,false) {
 			Rect.Z = menuZ;
 			init();
@@ -15,7 +13,6 @@ namespace Mince.Forms
 
 		void init() {
 			Background.Color = Theme.menuBg;
-			texture.IsMenu=true;
 			if (Parent is MenuItem) {
 				((MenuItem)Parent).menu = this;
 				isVisible=false;
