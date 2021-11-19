@@ -1,14 +1,46 @@
+using System;
+
 namespace Mince.Core
 {
 	public struct Rect
 	{
+		[AllowDuplicates]
+		public enum Alignment {
+			None=0,
+			Top=1,
+			Middle=2,
+			Bottom=3,
+			Left=1,
+			Center=2,
+			Right=3
+		}
+
 		public Point Position;
 		public Size Size;
 		public int32 Z=Control.defaultZ;
+		public Alignment AlignV=Alignment.None;
+		public Alignment AlignH=Alignment.None;
 
 		public this() {
 			Position = Point();
 			Size = Size();
+		}
+
+		public this(Rect rect) {
+			Position = rect.Position;
+			Size = rect.Size;
+			AlignV = rect.AlignV;
+			AlignH = rect.AlignH;
+		}
+
+		public this(Point position) {
+			Position = position;
+			Size = Size();
+		}
+
+		public this(Size size) {
+			Position = Point();
+			Size = size;
 		}
 
 		public this(int32 x, int32 y, int32 width, int32 height) {

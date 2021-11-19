@@ -11,28 +11,30 @@ namespace Mince.Forms
 
 		MouseEvent evt = new MouseEvent(this) ~ delete _;
 
-		public this(Object parent, Rect rect, StringView text) : base(parent,rect) {
-			init(text);
+		public this(Object parent, Rect rect, StringView text, Font font=null) : base(parent,rect) {
+			init(text, font);
 		}
 		public ~this() {
 		}
 
-		void init(StringView txt) {
+		void init(StringView txt, Font font) {
 			Background.Color = Theme.buttonBg;
 			hasFrame = true;
 			Frame.Color = Theme.buttonBorder;
 			Frame.Width = 1;
-			makeText(txt);
+			makeText(txt, font);
 		}
 
-		void makeText(StringView txt) {
+		void makeText(StringView txt, Font font) {
 			if (!txt.IsEmpty) {
 				Rect rect = Rect(0,0,Rect.Size.Width,Rect.Size.Height);
-				rect.Position.X = 4;
-				rect.Position.Y = 4;
-				Text = new Text(this, rect, txt);
-				Text.Font.Color = Theme.buttonText;
-				Text.Font.Size = 12;
+				rect.AlignV = .Middle;
+				rect.AlignH = .Center;
+				Text = new Text(this, rect, txt,font);
+				if (font==null) {
+					Text.Font.Color = Theme.buttonText;
+					Text.Font.Size = 12;
+				}
 			}
 		}
 
@@ -87,9 +89,9 @@ namespace Mince.Forms
 			base.MouseExit(event);
 		}
 
-		public void SetText(StringView text) {
+		public void SetText(StringView text,Font font=null) {
 			if (Text==null) {
-				makeText(text);
+				makeText(text,font);
 			} else {
 				Text.SetText(text);
 			}

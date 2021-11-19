@@ -372,7 +372,7 @@ namespace Mince.Core
 				SDL.FreeSurface(surface);
 			}
 
-			public void AddText(SDL2 g, List<String> text, Mince.Core.Font font, Mince.Core.Rect rect,int32 start, int32 count, int32 pitch=2) {
+			public void AddText(SDL2 g, List<StringView> text, Mince.Core.Font font, Mince.Core.Rect rect,int32 start, int32 count, int32 pitch=2) {
 				Rect r1 = rect;
 				uint32 format=0;
 				int32 access =0;
@@ -382,7 +382,9 @@ namespace Mince.Core
 				SDL.SetRenderTarget(g.renderer, Texture);
 				SDL.Rect* r = scope SDL.Rect();
 				for (int i=start;i<start+count;i++) {
-					SDL.Surface* surface = SDLTTF.RenderText_Solid(sdlfont,text[i], color); 
+					if (!(i < text.Count)) break;
+					String s = scope String(text[i]);
+					SDL.Surface* surface = SDLTTF.RenderText_Solid(sdlfont,s, color); 
 					SDL.Texture* texture = SDL.CreateTextureFromSurface(g.renderer, surface);
 					SDL.QueryTexture(texture, out format, out access, out r1.Size.Width, out r1.Size.Height);
 					SDL.SetTextureBlendMode(texture, SDL.BlendMode.Blend);

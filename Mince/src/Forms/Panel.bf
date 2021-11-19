@@ -46,6 +46,7 @@ namespace Mince.Forms
 			Graphics g = GetContext();
 			Background.Paint(g, ref texture);
 			if (hasFrame) Frame.Paint(g, ref texture);
+			base.fillTexture(rect);
 		}
 
 		public virtual void Scroll(ScrollEvent event) {

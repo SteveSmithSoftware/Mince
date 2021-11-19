@@ -40,10 +40,6 @@ namespace Mince.Forms
 			Thumb.Background.Color = Theme.scrollThumb;
 		}
 
-		protected override void fillTexture(Rect rect) {
-			//Graphics g = GetContext();
-		}
-
 		public override bool MouseScroll(MouseEvent event) {
 			if (event.Delta.Y<0) RightClick(event); else LeftClick(event);
 			return true;

@@ -37,6 +37,7 @@ namespace Mince.Forms
 
 			listBox = new ListBox(this,Rect(0,Rect.Size.Height,Rect.Size.Width,maxItems * (text.Font.Size+2)),lines,font,selected);
 			listBox.isVisible = false;
+			listBox.SetZ(3);
 			listBox.Selected.Add( new => this.ListSelected);
 
 			Index = selected;

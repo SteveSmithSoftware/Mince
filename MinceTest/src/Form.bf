@@ -19,6 +19,8 @@ namespace MinceTest
 		ListBox listbox;
 		DropDown dropdown;
 		Menu menu;
+		ComboBox combobox;
+		MessageBox messagebox;
 
 		public this(StringView title) :base(title, Size(800,640))
 		{
@@ -82,6 +84,23 @@ namespace MinceTest
 			dropdown = new DropDown(Form, Rect(5,270,200,20),l,f,2,5);
 			dropdown.Selected.Add( new => this.DropDownSelected);
 
+			List<String> cbl = scope List<String>();
+			cbl.Add("A");
+			cbl.Add("AB");
+			cbl.Add("ABC");
+			cbl.Add("C");
+			cbl.Add("CD");
+			cbl.Add("CDE");
+			cbl.Add("E");
+			cbl.Add("EF");
+			cbl.Add("EFG");
+			cbl.Add("ABCDEFGH");
+
+			combobox = new ComboBox(Form, Rect(5,300,200,20),cbl,f,2,5);
+			combobox.Selected.Add( new => this.ComboSelected);
+
+			messagebox = new MessageBox(Form,"Message Box", Size(300,300),"This is a message box");
+
 			Run();
 		}
 
@@ -91,6 +110,7 @@ namespace MinceTest
 		public void ButtonClick(MouseEvent event) {
 			((Button)event.Sender).SetText("Pressed");
 			text.SetText("Button Pressed");
+			messagebox.Show(event.Position);
 		}
 
 		public void CheckBoxClick(MouseEvent event) {
@@ -146,6 +166,15 @@ namespace MinceTest
 			String s = scope String("Menu Item ");
 			s.Append(mi.Title);
 			s.Append(" selected");
+			text.SetText(s);
+		}
+
+		public void ComboSelected(Event event) {
+			ComboBox cb  = (ComboBox)event.Sender;
+			String s = scope String("ComboBox Item ");
+			s.Append(cb.Index.ToString(.. scope String()));
+			s.Append(" selected. Item text: ");
+			s.Append(cb.SelectedText);
 			text.SetText(s);
 		}
 	}

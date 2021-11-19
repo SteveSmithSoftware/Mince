@@ -8,6 +8,7 @@ namespace Mince.Forms
 		public Text Text;
 
 		public System.Event<TextDlg> Changed ~ _.Dispose();
+		public System.Event<TextDlg> OnChange ~ _.Dispose();
 
 		MouseEvent evt = new MouseEvent(this) ~ delete _;
 		TextEvent tEvt = new TextEvent(this) ~ delete _;
@@ -15,32 +16,34 @@ namespace Mince.Forms
 		bool hasInput =false;
 		String currTxt;
 
-		public this(Object parent, Rect rect, StringView text) : base(parent,rect) {
-			init(text);
+		public this(Object parent, Rect rect, StringView text, Font font=null) : base(parent,rect) {
+			init(text, font);
 		}
 
 		public ~this() {
 			if (currTxt != null) delete currTxt;
 		}
 
-		void init(StringView txt) {
+		void init(StringView txt, Font font) {
 			Background.Color = Theme.buttonBg;
 			hasFrame = true;
 			Frame.Color = Theme.buttonBorder;
 			Frame.Width = 1;
-			makeText(txt);
+			makeText(txt,font);
 			currTxt = new String(txt);
 			tEvt.Text = currTxt;
 		}
 
-		void makeText(StringView txt) {
+		void makeText(StringView txt, Font font) {
 			if (!txt.IsEmpty) {
 				Rect rect = Rect(0,0,Rect.Size.Width,Rect.Size.Height);
 				rect.Position.X = 4;
 				rect.Position.Y = 4;
-				Text = new Text(this, rect, txt);
-				Text.Font.Color = Theme.buttonText;
-				Text.Font.Size = 12;
+				Text = new Text(this, rect, txt, font);
+				if (font == null) {
+					Text.Font.Color = Theme.buttonText;
+					Text.Font.Size = 12;
+				}
 			}
 		}
 
@@ -117,8 +120,10 @@ namespace Mince.Forms
 				Changed(tEvt);
 				break;
 			case KeyCode.BACKSPACE:
-				currTxt.RemoveFromEnd(1);
-				SetText(currTxt);
+				if (currTxt.Length>0) {
+					currTxt.RemoveFromEnd(1);
+					SetText(currTxt);
+				}
 				break;
 			default:
 				currTxt.Append(event.Char);
@@ -130,9 +135,11 @@ namespace Mince.Forms
 
 		public void SetText(StringView text) {
 			if (Text==null) {
-				makeText(text);
+				makeText(text,null);
 			} else {
 				Text.SetText(text);
+				tEvt.Text = text;
+				OnChange(tEvt);
 			}
 		}
 	}

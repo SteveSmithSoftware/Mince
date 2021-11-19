@@ -23,6 +23,7 @@ namespace Mince.Forms
 			Graphics g = GetContext();
 			texture.FillText(g, Text, Font);
 			Rect.Size = texture.Rect.Size;
+			base.fillTexture(rect);
 		}
 
 		public void SetText(StringView text) {

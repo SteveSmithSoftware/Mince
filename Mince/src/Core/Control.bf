@@ -82,8 +82,6 @@ namespace Mince.Core
 		public virtual void MouseEnter(MouseEvent event) {  }
 		public virtual void MouseExit(MouseEvent event) { mousedown=false; }
 
-		protected abstract void fillTexture(Rect rect);
-
 		public this() {
 
 		}
@@ -117,11 +115,66 @@ namespace Mince.Core
 			children.Add(control);
 		}
 
+		public void MoveTo(Point point) {
+			Point p = point;
+			p.X -= Rect.Position.X;
+			p.Y -= Rect.Position.Y;
+			Rect.Position = point;
+			for (Control child in children) {
+				child.MoveBy(p);
+			}
+		}
+
+		public void MoveBy(Point point) {
+			Rect.Position.X += point.X;
+			Rect.Position.Y += point.Y;
+			for (Control child in children) {
+				child.MoveBy(point);
+			}
+		}
+
+		public void SetZ(int32 z) {
+			Rect.Z = z;
+			for (Control child in children) {
+				child.SetZ(z);
+			}
+		}
+
 		public Graphics GetContext() {
 			if (Parent != null) {
 				return Parent.GetContext();
 			}
 			return window.GetContext();
+		}
+
+		protected virtual void fillTexture(Rect rect) {
+			switch (Rect.AlignH) {
+			case .Left:
+				Rect.Position.X = Parent.Rect.Position.X;
+				break;
+			case .Center:
+				Rect.Position.X = Parent.Rect.Position.X + ((Parent.Rect.Size.Width - Rect.Size.Width) / 2);
+				break;
+			case .Right:
+				Rect.Position.X = Parent.Rect.Position.X + (Parent.Rect.Size.Width - Rect.Size.Width);
+				break;
+			default:
+				break;
+			}
+
+			switch (Rect.AlignV) {
+			case .Top:
+				Rect.Position.Y = Parent.Rect.Position.Y;
+				break;
+			case .Middle:
+				Rect.Position.Y = Parent.Rect.Position.Y + ((Parent.Rect.Size.Height - Rect.Size.Height) / 2);
+				break;
+			case .Bottom:
+				Rect.Position.Y = Parent.Rect.Position.Y + (Parent.Rect.Size.Height - Rect.Size.Height);
+				break;
+			default:
+				break;
+			}
 		}
 
 		public virtual void Paint() {

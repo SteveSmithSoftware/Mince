@@ -6,9 +6,9 @@ namespace Mince.Forms
 {
 	public class Window
 	{
-		List<Control> controls = new .();
-		String title = new String() ~ delete _;
-		Rect rect = Rect();
+		protected List<Control> controls = new .();
+		protected String title = new String() ~ delete _;
+		protected Rect rect = Rect();
 
 		Graphics graphics;
 		const int Zlevels=6;
@@ -44,6 +44,10 @@ namespace Mince.Forms
 		
 		public void Run() {
 			graphics.Loop();
+		}
+
+		public void Quit() {
+			graphics.quit();
 		}
 
 		public void Add(Control control) {

@@ -7,7 +7,8 @@ namespace Mince.Forms
 	public class ListView : Panel
 	{
 		public Font font ~ delete _;
-		public List<String> lines ~ DeleteContainerAndItems!(_);
+		public List<String> origLines ~ DeleteContainerAndItems!(_);
+		public List<StringView> lines ~ DeleteAndNullify!(_);
 		public int32 count=0;
 		public int32 topItem=0;
 
@@ -20,9 +21,11 @@ namespace Mince.Forms
 		void init( List<String> text, int32 start) {
 			Background.Color = Theme.listBg;
 			hasFrame=false;
-			lines = new List<String>();
-			for (String s in text) {
-				lines.Add(new String(s));
+			origLines = new List<String>();
+			lines = new List<StringView>();
+			for (int i=0; i< text.Count;i++) {
+				origLines.Add(new String(text[i]));
+				lines.Add(origLines[i]);
 			}
 			count = Rect.Size.Height / (font.Size +2);
 			if (count < lines.Count) VertScrollBar.isVisible = true;
@@ -68,6 +71,41 @@ namespace Mince.Forms
 				IsDirty=true;
 			}
 			return topItem;
+		}
+
+		public void Contains(StringView text) {
+			String s = scope String(text);
+			lines.Clear();
+			for (int i=0;i<origLines.Count;i++) {
+				if (origLines[i].Contains(s)) lines.Add(origLines[i]);
+			}
+			IsDirty=true;
+		}
+
+		public void StartsWith(StringView text) {
+			String s = scope String(text);
+			lines.Clear();
+			for (int i=0;i<origLines.Count;i++) {
+				if (origLines[i].StartsWith(s)) lines.Add(origLines[i]);
+			}
+			IsDirty=true;
+		}
+
+		public void Subset(int[] indexes) {
+			lines.Clear();
+			for (int i=0;i<indexes.Count;i++) {
+				if (origLines.Count > indexes[i]) lines.Add(origLines[indexes[i]]);
+			}
+			IsDirty=true;
+		}
+
+		public void Subset(bool[] indexes) {
+			if (indexes.Count != origLines.Count) return;
+			lines.Clear();
+			for (int i=0;i<indexes.Count;i++) {
+				if (indexes[i]) lines.Add(origLines[i]);
+			}
+			IsDirty=true;
 		}
 	}
 }

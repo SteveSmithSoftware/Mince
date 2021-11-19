@@ -22,7 +22,6 @@ namespace Mince.Forms
 		void init(int32 selected) {
 			selectBox = new Panel(this, Rect(0,0,Rect.Size.Width, font.Size+3));
 			selectBox.Background.Color = Theme.listSelect;
-			//SelectedText = lines[selected];
 			ScrollTo(selected);
 		}
 
@@ -74,9 +73,9 @@ namespace Mince.Forms
 				selectBox.Rect.Position.Y = newPos;
 				step += dir;
 			}
-			if (Index+dir >= 0 && Index+dir < lines.Count) {
+			if (Index+dir >= 0 && Index+dir < origLines.Count) {
 				Index += dir;
-				SelectedText = lines[Index];
+				SelectedText = origLines[Index];
 			}
 		}
 
@@ -86,7 +85,7 @@ namespace Mince.Forms
 				int32 offset = index - selItem;
 				selectBox.Rect.Position.Y = Rect.Position.Y + (offset * (font.Size+2));
 				Index = index;
-				SelectedText = lines[index];
+				SelectedText = origLines[index];
 			}
 			return index;
 		}
