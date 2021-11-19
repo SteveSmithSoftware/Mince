@@ -16,7 +16,8 @@ Tools so far :-
     ListBox - Selectable ListView
     DropDown - Popup ListBox
     Menu + MenuItem - Basic Menu
-    MessageBox - Text message + OK button
+    Dialog - Popup window with title
+    MessageBox - Dialog with text message + OK button
     
     See MinceTest for an example of usage.
     
