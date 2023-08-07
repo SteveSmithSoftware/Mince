@@ -291,7 +291,7 @@ namespace Mince.Core
 			    	iconsS[i] = SDL.CreateRGBSurface(0, size, size, 32, rmask, gmask, bmask, amask);
 					source.x = (i % 20) * size;
 					source.y = (i / 20) * size;
-					SDL.SDL_BlitSurface(images, &source, iconsS[i], &dest);
+					SDL.BlitSurface(images, &source, iconsS[i], &dest);
 					//iconsT[i] = SDL.CreateTextureFromSurface(renderer, iconsS[i]);
 				}
 /*			} else {
@@ -421,7 +421,7 @@ namespace Mince.Core
 				//image = SDL.SDL_LoadBMP(name);
 				if (image != null) {
 					SDL.Surface* surface = SDL.CreateRGBSurface(0, Rect.Size.Width, Rect.Size.Height, 32,g.rmask, g.gmask, g.bmask, g.amask);
-					SDL.SDL_BlitScaled(image, null, surface, null);
+					SDL.BlitScaled(image, null, surface, null);
 					Texture = SDL.CreateTextureFromSurface(g.renderer, surface);
 					SDL.FreeSurface(surface);
 				}
@@ -431,7 +431,7 @@ namespace Mince.Core
 
 			public void FillImage(SDL2 g, int32 ix) {
 				SDL.Surface* surface = SDL.CreateRGBSurface(0, Rect.Size.Width, Rect.Size.Height, 32,g.rmask, g.gmask, g.bmask, g.amask);
-				SDL.SDL_BlitScaled(g.iconsS[ix], null, surface, null);
+				SDL.BlitScaled(g.iconsS[ix], null, surface, null);
 				Texture = SDL.CreateTextureFromSurface(g.renderer, surface);
 				SDL.FreeSurface(surface);
 			}
